@@ -1,10 +1,10 @@
 package com.example.product_catalog.config;
 
-import java.security.Key;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
@@ -18,7 +18,7 @@ public class JwtService {
 
 
 
-    public Claims extractAllCalims(String jwt){
+    public Claims extractAllClaims(String jwt){
             return  Jwts
                     .parser()
                     .verifyWith(getSignKey())
@@ -30,12 +30,17 @@ public class JwtService {
     }
 
     public <T> T extractClaim(String jwt,Function<Claims,T>claimsResolver){
-       final  Claims Claims=extractAllCalims(jwt);
+       final  Claims Claims=extractAllClaims(jwt);
         return claimsResolver.apply(Claims);
     }
 
     public String extractUserName(String jwt){
         return extractClaim(jwt, Claims::getSubject);
+    }
+
+    public boolean isTokenValid(String jwt,UserDetails userDetails){
+        final String userName=extractUserName(jwt) ;
+        return userName.equals(userDetails.getUsername());
     }
 
 

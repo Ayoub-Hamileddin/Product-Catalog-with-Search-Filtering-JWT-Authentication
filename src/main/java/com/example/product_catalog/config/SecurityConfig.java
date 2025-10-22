@@ -3,6 +3,7 @@ package com.example.product_catalog.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 
@@ -32,6 +35,13 @@ public class SecurityConfig {
             session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         
         )
+        
+        /*
+        *       it verifiying the credentials provided by a user sach as username and password against a known source of inforamation like a database .
+        *       if the authentiction success it return Authentication object represnting the authentication user
+        */          
+        .authenticationProvider(authenticationProvider)
+
         .addFilterBefore(jwtAuthenticationFilter,UsernamePasswordAuthenticationFilter.class);
 
         return null;
