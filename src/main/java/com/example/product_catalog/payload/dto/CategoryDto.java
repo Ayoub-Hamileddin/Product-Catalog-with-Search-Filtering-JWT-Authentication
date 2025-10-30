@@ -1,0 +1,17 @@
+package com.example.product_catalog.payload.dto;
+
+import java.util.List;
+
+import com.example.product_catalog.entity.Product;
+
+import lombok.Builder;
+import lombok.Data;
+
+
+@Data
+@Builder
+public class CategoryDto {
+ private Long id ;
+ private String name ;
+ private List<Product> product;
+}
