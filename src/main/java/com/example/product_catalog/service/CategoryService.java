@@ -6,8 +6,8 @@ import com.example.product_catalog.payload.dto.CategoryDto;
 
 public interface CategoryService {
     List<CategoryDto> getAllCategories();
-    CategoryDto getCategoryById();
+    CategoryDto getCategoryById(Long categoryId) throws Exception;
     CategoryDto createCategory(CategoryDto categoryDto);
-    CategoryDto updateCategory(Long CategoryId,CategoryDto categoryDto);
-    void deleteCatgory();
+    CategoryDto updateCategory(Long CategoryId,CategoryDto categoryDto) throws Exception;
+    void deleteCatgory(Long categoryId) throws Exception;
 }
