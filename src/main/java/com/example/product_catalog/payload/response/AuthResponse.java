@@ -12,7 +12,7 @@ public class AuthResponse {
 
     private String message;
 
-    private UserDTO UserDto;
+    private UserDTO User;
 
     
 }
