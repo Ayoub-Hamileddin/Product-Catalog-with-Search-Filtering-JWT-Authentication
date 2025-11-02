@@ -50,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
         return AuthResponse.builder()
                     .jwt(jwt)
                     .message("Login successfuly")
-                    .UserDto(UserMapper.ToDTO(user))
+                    .User(UserMapper.ToDTO(user))
             .build();
     }
 
@@ -63,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
             );
 
         User user=User.builder()
-                    .userName(request.getUserName())
+                    .Name(request.getName())
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .roles(List.of(defaultRole))
@@ -74,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
         return AuthResponse.builder()
                 .jwt(jwt)
                 .message("Registered successfuly")
-                .UserDto(UserMapper.ToDTO(usersaved))
+                .User(UserMapper.ToDTO(usersaved))
         .build();
 
     }
