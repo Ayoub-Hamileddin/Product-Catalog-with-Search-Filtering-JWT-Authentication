@@ -12,7 +12,7 @@ import lombok.Data;
 @Builder
 public class UserDTO {
 
-    private String userName;
+    private String Name;
 
     private String email;
 
