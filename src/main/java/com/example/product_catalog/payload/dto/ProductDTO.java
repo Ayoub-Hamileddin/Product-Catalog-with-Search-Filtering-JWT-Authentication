@@ -15,4 +15,5 @@ public class ProductDTO {
     private Double rating ;
     private Boolean inStock ;
     private Category category ;
+    private Long categoryId ;
 }
