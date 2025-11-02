@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import com.example.product_catalog.entity.User;
 import com.example.product_catalog.mapper.UserMapper;
@@ -53,10 +53,9 @@ public class UserServiceImpl implements UserService {
              ()->new Exception("User Not Found")
        );
 
-       user.setEmail(userDTO.getEmail());
-       user.setUserName(userDTO.getUserName());
-       user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-       user.setRoles(userDTO.getRoles());
+       user.setEmail(userDTO.getEmail()!=null?userDTO.getEmail():user.getEmail());
+       user.setName(userDTO.getName()!=null?userDTO.getName():user.getName());
+       user.setPassword(userDTO.getPassword()!=null? passwordEncoder.encode(userDTO.getPassword()):user.getPassword());
 
        User savedUser= userRepository.save(user);
 
