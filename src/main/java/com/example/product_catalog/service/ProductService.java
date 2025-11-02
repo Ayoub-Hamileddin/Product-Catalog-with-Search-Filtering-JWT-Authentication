@@ -5,9 +5,16 @@ import java.util.List;
 import com.example.product_catalog.payload.dto.ProductDTO;
 
 public interface ProductService {
-    List<ProductDTO> getAllProduct();
-    ProductDTO getProductById();
-    ProductDTO createProduct(ProductDTO productDTO);
-    ProductDTO updateProduct(Long ProductId,ProductDTO productDTO);
-    void deleteProduct();
+    List<ProductDTO> getAllProduct( String name,
+                                   String description,
+                                   String categoryName,
+                                   Double minPrice,
+                                   Double maxPrice,
+                                   Boolean InStock,
+                                   String  orderBy,
+                                   String  sortBy);
+    ProductDTO getProductById(Long Id) throws Exception;
+    ProductDTO createProduct(ProductDTO productDTO) throws Exception;
+    ProductDTO updateProduct(Long ProductId,ProductDTO productDTO) throws Exception;
+    void deleteProduct(Long Id) throws Exception;
 }
