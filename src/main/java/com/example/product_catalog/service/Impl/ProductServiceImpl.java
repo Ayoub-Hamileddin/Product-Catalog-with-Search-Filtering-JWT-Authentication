@@ -2,6 +2,8 @@ package com.example.product_catalog.service.Impl;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.product_catalog.entity.Category;
@@ -21,15 +23,10 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository; 
 
     @Override
-    public List<ProductDTO> getAllProduct(String name,
-                                   String description,
-                                   String categoryName,
-                                   Double minPrice,
-                                   Double maxPrice,
-                                   Boolean InStock,
-                                   String  orderBy,
-                                   String  sortBy) {
-       List<Product> products = productRepository.findProducts(name, description, categoryName, minPrice, maxPrice, InStock, orderBy, sortBy);
+    public List<ProductDTO> getAllProduct(Pageable pageable , String search) {
+       List<Product> products = search == null?
+                     productRepository.findAll(pageable).getContent()
+                    :productRepository.findByName(search, pageable).getContent();
        return products
             .stream()
             .map(product ->  ProductMapper.ToDTO(product))
@@ -70,16 +67,25 @@ public class ProductServiceImpl implements ProductService {
             ()->new Exception("product not found")
         );
 
-         Category category=categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(
+         
+       if (productDTO.getName()!=null) {product.setName(productDTO.getName());}
+
+       if (productDTO.getDescription()!=null) {product.setDescription(productDTO.getDescription());}
+
+       if (productDTO.getPrice()!=null) {product.setPrice(productDTO.getPrice()); }
+
+       if (productDTO.getRating()!=null) {product.setRating(productDTO.getRating()); }
+
+       if (productDTO.getInStock()!=null) {product.setInStock(productDTO.getInStock());}
+
+       if (productDTO.getCategoryId()!=null) {
+             Category category=categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(
             ()->new Exception("category not found")
         );
+             product.setCategory(category);
+        }
 
-        product.setName(productDTO.getName());
-        product.setDescription(productDTO.getDescription());
-        product.setPrice(productDTO.getPrice());
-        product.setRating(productDTO.getRating());
-        product.setInStock(productDTO.getInStock());
-        product.setCategory(category);
+       
 
        
         return ProductMapper.ToDTO( productRepository.save(product));
