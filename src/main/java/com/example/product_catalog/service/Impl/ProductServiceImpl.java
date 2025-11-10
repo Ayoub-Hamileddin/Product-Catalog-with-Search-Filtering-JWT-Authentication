@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.product_catalog.entity.Category;
@@ -13,6 +14,7 @@ import com.example.product_catalog.payload.dto.ProductDTO;
 import com.example.product_catalog.repository.CategoryRepository;
 import com.example.product_catalog.repository.ProductRepository;
 import com.example.product_catalog.service.ProductService;
+import com.example.product_catalog.specification.ProductSpecification;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,10 +25,13 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository; 
 
     @Override
-    public List<ProductDTO> getAllProduct(Pageable pageable , String search) {
-       List<Product> products = search == null?
-                     productRepository.findAll(pageable).getContent()
-                    :productRepository.findByName(search, pageable).getContent();
+    public List<ProductDTO> getAllProduct(Pageable pageable , String search,String name) {
+
+    Specification<Product> spec=ProductSpecification
+                                    .hasKeyword(search)
+                                    .and(ProductSpecification.withCategory(name));
+    List<Product> products = productRepository.findAll(spec,pageable).getContent();
+        
        return products
             .stream()
             .map(product ->  ProductMapper.ToDTO(product))
