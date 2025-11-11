@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import com.example.product_catalog.payload.dto.ProductDTO;
 
 public interface ProductService {
-    List<ProductDTO> getAllProduct(Pageable  pageable , String search ,String name);
+    List<ProductDTO> getAllProduct(Pageable  pageable , String search ,String name,Double minPrice, Double maxPrice,Boolean inStock,Double rating);
 
     ProductDTO getProductById(Long Id) throws Exception;
 
