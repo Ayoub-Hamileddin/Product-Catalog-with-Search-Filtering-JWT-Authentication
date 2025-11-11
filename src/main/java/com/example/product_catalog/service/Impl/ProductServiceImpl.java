@@ -25,11 +25,16 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository; 
 
     @Override
-    public List<ProductDTO> getAllProduct(Pageable pageable , String search,String name) {
+    public List<ProductDTO> getAllProduct(Pageable pageable , String search,String name,Double minPrice, Double maxPrice,Boolean inStock,Double rating) {
 
     Specification<Product> spec=ProductSpecification
                                     .hasKeyword(search)
-                                    .and(ProductSpecification.withCategory(name));
+                                    .and(ProductSpecification.withCategory(name))
+                                    .and(ProductSpecification.rangePrice(minPrice, maxPrice))
+                                    .and(ProductSpecification.availibilty(inStock))
+                                    .and(ProductSpecification.rating(rating))
+                                    
+                                    ;
     List<Product> products = productRepository.findAll(spec,pageable).getContent();
         
        return products
